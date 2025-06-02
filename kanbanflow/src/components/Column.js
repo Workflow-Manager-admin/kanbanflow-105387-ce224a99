@@ -107,7 +107,7 @@ function Column({
         )}
       </div>
       
-      {!showTaskForm && (
+      {!showTaskForm && !editingTask && (
         <button 
           className="add-task-button" 
           onClick={() => setShowTaskForm(true)}
