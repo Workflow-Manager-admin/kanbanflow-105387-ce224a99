@@ -106,3 +106,132 @@ body {
   padding: 12px 24px;
   font-size: 1.1rem;
 }
+
+/* Board Layout Styles */
+.board-container {
+  padding-top: 80px;
+  width: 100%;
+}
+
+.board {
+  padding: 20px 0;
+}
+
+.board h1 {
+  margin-bottom: 30px;
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.board-columns {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+
+/* Column Styles */
+.column {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  min-width: 280px;
+  width: 280px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 15px;
+  margin: 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--base-light);
+}
+
+.task-list {
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+.empty-column-text {
+  color: var(--text-secondary);
+  text-align: center;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.add-task-button {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-task-button:hover {
+  color: var(--text-color);
+  border-color: var(--base-light);
+  background-color: rgba(0, 255, 255, 0.1);
+}
+
+/* TaskCard Styles */
+.task-card {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.task-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.task-priority {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.task-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-button {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 3px;
+}
+
+.edit-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+}
