@@ -89,6 +89,48 @@ function Board() {
     });
   };
 
+  // Function to start editing a task
+  const startEditTask = (columnId, taskId) => {
+    // Find the task to edit
+    const column = columns.find(col => col.id === columnId);
+    if (column) {
+      const taskToEdit = column.tasks.find(task => task.id === taskId);
+      if (taskToEdit) {
+        setEditingTask({
+          task: taskToEdit,
+          columnId: columnId
+        });
+      }
+    }
+  };
+
+  // Function to save edited task
+  const saveEditedTask = (editedTaskData) => {
+    if (!editingTask) return;
+    
+    setColumns(columns.map(column => {
+      if (column.id === editingTask.columnId) {
+        return {
+          ...column,
+          tasks: column.tasks.map(task => 
+            task.id === editingTask.task.id 
+              ? { ...task, ...editedTaskData } 
+              : task
+          )
+        };
+      }
+      return column;
+    }));
+    
+    // Clear editing state
+    setEditingTask(null);
+  };
+
+  // Function to cancel task editing
+  const cancelEditTask = () => {
+    setEditingTask(null);
+  };
+
   return (
     <div className="board">
       <h1>KanbanFlow Board</h1>
@@ -101,6 +143,10 @@ function Board() {
             tasks={column.tasks}
             onAddTask={(task) => addTask(column.id, task)}
             onMoveTask={moveTask}
+            onEditTask={startEditTask}
+            editingTask={editingTask && editingTask.columnId === column.id ? editingTask.task : null}
+            onSaveEdit={saveEditedTask}
+            onCancelEdit={cancelEditTask}
           />
         ))}
       </div>
