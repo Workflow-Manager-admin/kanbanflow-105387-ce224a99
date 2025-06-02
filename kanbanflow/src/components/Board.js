@@ -47,6 +47,45 @@ function Board() {
     }));
   };
 
+  // Function to move a task from one column to another
+  const moveTask = (taskId, sourceColumnId, targetColumnId) => {
+    // Don't do anything if dropping in the same column
+    if (sourceColumnId === targetColumnId) {
+      return;
+    }
+
+    // Create a new copy of columns array to update state
+    setColumns(prevColumns => {
+      // Find the source column and task
+      const sourceColumn = prevColumns.find(col => col.id === sourceColumnId);
+      if (!sourceColumn) return prevColumns;
+
+      // Find the task in the source column
+      const taskToMove = sourceColumn.tasks.find(task => task.id === taskId);
+      if (!taskToMove) return prevColumns;
+
+      // Create updated columns array by removing task from source and adding to target
+      return prevColumns.map(column => {
+        // Remove from source column
+        if (column.id === sourceColumnId) {
+          return {
+            ...column,
+            tasks: column.tasks.filter(task => task.id !== taskId)
+          };
+        }
+        // Add to target column
+        if (column.id === targetColumnId) {
+          return {
+            ...column,
+            tasks: [...column.tasks, taskToMove]
+          };
+        }
+        // Return other columns unchanged
+        return column;
+      });
+    });
+  };
+
   return (
     <div className="board">
       <h1>KanbanFlow Board</h1>
@@ -58,6 +97,7 @@ function Board() {
             title={column.title} 
             tasks={column.tasks}
             onAddTask={(task) => addTask(column.id, task)}
+            onMoveTask={moveTask}
           />
         ))}
       </div>
