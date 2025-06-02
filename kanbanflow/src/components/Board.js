@@ -33,6 +33,9 @@ function Board() {
       ] 
     }
   ]);
+  
+  // State to track the task being edited
+  const [editingTask, setEditingTask] = useState(null);
 
   // Function to add a task to a specific column
   const addTask = (columnId, newTask) => {
