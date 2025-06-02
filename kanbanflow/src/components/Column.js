@@ -8,8 +8,9 @@ import TaskForm from './TaskForm';
  * Represents a single column in the Kanban board (e.g., "To Do", "In Progress", "Done").
  * Contains multiple task cards and handles adding new tasks.
  */
-function Column({ columnId, title, tasks, onAddTask }) {
+function Column({ columnId, title, tasks, onAddTask, onMoveTask }) {
   const [showTaskForm, setShowTaskForm] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleAddTask = (taskData) => {
     onAddTask(taskData);
@@ -20,8 +21,42 @@ function Column({ columnId, title, tasks, onAddTask }) {
     setShowTaskForm(false);
   };
 
+  // Handle drag over to allow dropping
+  const handleDragOver = (e) => {
+    e.preventDefault(); // Necessary to allow dropping
+    if (!isDragOver) {
+      setIsDragOver(true);
+    }
+  };
+
+  // Handle drag leave to update visual feedback
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  // Handle drop event
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    
+    // Get task data from drag event
+    const taskId = e.dataTransfer.getData('taskId');
+    const sourceColumnId = e.dataTransfer.getData('sourceColumnId');
+    
+    // Move the task if we have valid data and a move function
+    if (taskId && sourceColumnId && onMoveTask) {
+      onMoveTask(taskId, sourceColumnId, columnId);
+    }
+  };
+
   return (
-    <div className="column">
+    <div 
+      className={`column ${isDragOver ? 'drag-over' : ''}`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      aria-label={`${title} column`}
+    >
       <h2 className="column-title">{title}</h2>
       <div className="task-list">
         {showTaskForm && (
@@ -35,6 +70,8 @@ function Column({ columnId, title, tasks, onAddTask }) {
           tasks.map(task => (
             <TaskCard
               key={task.id}
+              taskId={task.id}
+              columnId={columnId}
               title={task.title}
               description={task.description}
               priority={task.priority}
