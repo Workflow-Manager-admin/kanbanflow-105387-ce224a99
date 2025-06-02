@@ -73,10 +73,18 @@ function Column({
     >
       <h2 className="column-title">{title}</h2>
       <div className="task-list">
-        {showTaskForm && (
+        {showTaskForm && !editingTask && (
           <TaskForm 
             onSubmit={handleAddTask}
             onCancel={handleCancelAdd}
+          />
+        )}
+        
+        {editingTask && (
+          <TaskForm 
+            task={editingTask}
+            onSubmit={onSaveEdit}
+            onCancel={onCancelEdit}
           />
         )}
         
@@ -90,10 +98,12 @@ function Column({
               description={task.description}
               priority={task.priority}
               color={task.color}
+              onEdit={handleEditTask}
+              isEditing={editingTask && editingTask.id === task.id}
             />
           ))
         ) : (
-          !showTaskForm && <p className="empty-column-text">No tasks yet</p>
+          !showTaskForm && !editingTask && <p className="empty-column-text">No tasks yet</p>
         )}
       </div>
       
