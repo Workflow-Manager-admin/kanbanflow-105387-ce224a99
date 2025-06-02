@@ -24,6 +24,13 @@ function Column({ columnId, title, tasks, onAddTask }) {
     <div className="column">
       <h2 className="column-title">{title}</h2>
       <div className="task-list">
+        {showTaskForm && (
+          <TaskForm 
+            onSubmit={handleAddTask}
+            onCancel={handleCancelAdd}
+          />
+        )}
+        
         {tasks && tasks.length > 0 ? (
           tasks.map(task => (
             <TaskCard
@@ -35,14 +42,7 @@ function Column({ columnId, title, tasks, onAddTask }) {
             />
           ))
         ) : (
-          <p className="empty-column-text">No tasks yet</p>
-        )}
-
-        {showTaskForm && (
-          <TaskForm 
-            onSubmit={handleAddTask}
-            onCancel={handleCancelAdd}
-          />
+          !showTaskForm && <p className="empty-column-text">No tasks yet</p>
         )}
       </div>
       

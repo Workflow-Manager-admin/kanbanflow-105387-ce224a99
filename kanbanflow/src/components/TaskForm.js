@@ -84,7 +84,7 @@ function TaskForm({ task, onSubmit, onCancel }) {
           Cancel
         </button>
         <button type="submit" className="btn">
-          {task ? 'Update Task' : 'Create Task'}
+          {task ? 'Update Task' : 'Add Task'}
         </button>
       </div>
     </form>
