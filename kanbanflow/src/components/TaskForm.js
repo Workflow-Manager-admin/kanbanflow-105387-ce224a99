@@ -27,7 +27,16 @@ function TaskForm({ task, onSubmit, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    
+    // If editing an existing task, preserve its ID
+    if (isEditing) {
+      onSubmit({
+        ...formData,
+        id: task.id
+      });
+    } else {
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -87,7 +96,7 @@ function TaskForm({ task, onSubmit, onCancel }) {
           Cancel
         </button>
         <button type="submit" className="btn">
-          {task ? 'Update Task' : 'Add Task'}
+          {isEditing ? 'Update Task' : 'Add Task'}
         </button>
       </div>
     </form>
