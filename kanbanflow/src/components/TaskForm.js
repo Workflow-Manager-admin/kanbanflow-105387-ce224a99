@@ -13,6 +13,9 @@ function TaskForm({ task, onSubmit, onCancel }) {
     priority: task?.priority || 'medium',
     color: task?.color || '#1976d2'
   });
+  
+  // Preserve the task ID if we're editing
+  const isEditing = !!task;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
