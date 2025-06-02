@@ -8,7 +8,17 @@ import TaskForm from './TaskForm';
  * Represents a single column in the Kanban board (e.g., "To Do", "In Progress", "Done").
  * Contains multiple task cards and handles adding new tasks.
  */
-function Column({ columnId, title, tasks, onAddTask, onMoveTask }) {
+function Column({ 
+  columnId, 
+  title, 
+  tasks, 
+  onAddTask, 
+  onMoveTask, 
+  onEditTask, 
+  editingTask, 
+  onSaveEdit, 
+  onCancelEdit 
+}) {
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -19,6 +29,10 @@ function Column({ columnId, title, tasks, onAddTask, onMoveTask }) {
 
   const handleCancelAdd = () => {
     setShowTaskForm(false);
+  };
+
+  const handleEditTask = (taskId) => {
+    onEditTask(columnId, taskId);
   };
 
   // Handle drag over to allow dropping
