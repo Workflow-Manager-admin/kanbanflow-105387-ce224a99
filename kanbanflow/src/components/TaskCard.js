@@ -7,7 +7,7 @@ import React, { useState } from 'react';
  * Displays task details like title, description, and status.
  * Includes drag-and-drop functionality to move tasks between columns.
  */
-function TaskCard({ taskId, columnId, title, description, priority, color }) {
+function TaskCard({ taskId, columnId, title, description, priority, color, onEdit, isEditing }) {
   const [isDragging, setIsDragging] = useState(false);
   
   // Map priority to a human-readable format with capitalization
@@ -40,6 +40,14 @@ function TaskCard({ taskId, columnId, title, description, priority, color }) {
     setIsDragging(false);
   };
   
+  // Handle edit button click
+  const handleEditClick = (e) => {
+    // Stop the event from triggering drag
+    e.stopPropagation();
+    e.preventDefault();
+    onEdit(taskId);
+  };
+  
   return (
     <div 
       className={`task-card ${isDragging ? 'dragging' : ''}`}
@@ -55,7 +63,14 @@ function TaskCard({ taskId, columnId, title, description, priority, color }) {
       {description && <p className="task-description">{description}</p>}
       {priority && <div className="task-priority">Priority: {formatPriority(priority)}</div>}
       <div className="task-actions">
-        <button className="edit-button" aria-label="Edit task">Edit</button>
+        <button 
+          className="edit-button" 
+          aria-label="Edit task"
+          onClick={handleEditClick}
+          disabled={isEditing}
+        >
+          Edit
+        </button>
       </div>
     </div>
   );
