@@ -140,6 +140,12 @@ body {
   max-height: 80vh;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.column.drag-over {
+  background-color: rgba(0, 255, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
 .column-title {
