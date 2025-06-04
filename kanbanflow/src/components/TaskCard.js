@@ -51,7 +51,7 @@ function TaskCard({ taskId, columnId, title, description, priority, color, onEdi
   return (
     <div 
       className={`task-card ${isDragging ? 'dragging' : ''}`}
-      style={{ borderLeft: `4px solid ${color || 'var(--base-light)'}` }}
+      style={{ borderLeft: `4px solid ${color || 'var(--accent-color)'}` }}
       draggable="true"
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
