@@ -1,16 +1,27 @@
 :root {
-  --base-light: #00ffff;
-  --base-dark: #00008b;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
+  --app-bg: #ffffff;
+  --text-primary: #222222;
+  --text-secondary: #555555;
+  --border-color: #dddddd;
+  --column-bg-1: #f7fafd;
+  --column-bg-2: #e3eaf4;
+  --column-bg-3: #f0f4e3;
+  --column-bg-default: #f0f0f0; /* Default for additional columns */
+  --button-bg: #4a90e2;
+  --button-text: #ffffff;
+  --button-hover-bg: #357abd;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --danger-color: #e74c3c;
+  --danger-hover-bg: #c0392b;
+  --accent-color: #4a90e2; /* Used for logo symbol and other highlights */
 }
 
 body {
   margin: 0;
   font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: var(--base-dark);
-  color: var(--text-color);
+  background-color: var(--app-bg);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -22,12 +33,12 @@ body {
 }
 
 .navbar {
-  background-color: var(--base-dark);
+  background-color: var(--app-bg); /* Changed from --base-dark */
   padding: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color); /* Changed from old --border-color */
   position: fixed;
   top: 0;
   width: 100%;
@@ -41,54 +52,30 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--text-primary); /* Ensure logo text is readable */
 }
 
 .logo-symbol {
-  color: var(--base-light);
+  color: var(--accent-color); /* Changed from --base-light */
 }
 
 .container {
-  max-width: 900px;
+  max-width: 900px; /* Consider making this wider for Kanban boards, or 100% width for board container */
   margin: 0 auto;
   padding: 0 24px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.hero {
-  padding-top: 120px;
-  padding-bottom: 64px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+/* Remove Hero Section as it's not relevant for a Kanban board app focus */
+.hero, .subtitle, .title, .description {
+  display: none; 
 }
 
-.subtitle {
-  color: var(--base-light);
-  font-weight: 500;
-  font-size: 1.1rem;
-}
-
-.title {
-  font-size: 3.5rem;
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0;
-}
-
-.description {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin-bottom: 16px;
-}
 
 .btn {
-  background-color: var(--base-light);
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
@@ -99,7 +86,7 @@ body {
 }
 
 .btn:hover {
-  background-color: #7691ff;
+  background-color: var(--button-hover-bg);
 }
 
 .btn-large {
@@ -109,59 +96,81 @@ body {
 
 /* Board Layout Styles */
 .board-container {
-  padding-top: 80px;
+  padding-top: 80px; /* Space for fixed navbar */
   width: 100%;
+  flex-grow: 1; /* Allow board to take available space */
+  display: flex; /* For centering board content if container has max-width */
+  justify-content: center; /* Center if .container is used with max-width */
 }
+
+/* Make .board's direct child container take full width if needed */
+.board-container > .container {
+    max-width: 100%; /* Allow board to span full width */
+    padding: 0 20px; /* Add some padding */
+}
+
 
 .board {
   padding: 20px 0;
+  width: 100%;
 }
 
 .board h1 {
   margin-bottom: 30px;
-  color: var(--text-color);
+  color: var(--text-primary); /* Changed from --text-color */
   font-size: 2rem;
   font-weight: 600;
+  text-align: center; /* Center board title */
 }
 
 .board-columns {
   display: flex;
   gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 20px;
+  overflow-x: auto; /* Keep horizontal scroll for columns */
+  padding-bottom: 20px; /* Space at the bottom */
+  align-items: flex-start; /* Align columns to the top */
 }
 
 /* Column Styles */
 .column {
-  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color will be set by nth-child */
   border-radius: 6px;
-  min-width: 280px;
-  width: 280px;
-  max-height: 80vh;
+  min-width: 300px; /* Slightly wider columns */
+  width: 300px;
+  max-height: calc(100vh - 120px); /* Adjust based on navbar and board padding */
   display: flex;
   flex-direction: column;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--border-color); /* Add a light border to columns */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Softer shadow */
 }
 
+.column:nth-child(1) { background-color: var(--column-bg-1); }
+.column:nth-child(2) { background-color: var(--column-bg-2); }
+.column:nth-child(3) { background-color: var(--column-bg-3); }
+/* Add more nth-child rules if more columns are common, or use a default */
+.column:nth-child(n+4) { background-color: var(--column-bg-default); }
+
+
 .column.drag-over {
-  background-color: rgba(0, 255, 255, 0.05);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 10px var(--accent-color); /* Use accent color for drag-over highlight */
+  border-color: var(--accent-color);
 }
 
 .column-title {
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600; /* Bolder title */
   padding: 15px;
   margin: 0;
   border-bottom: 1px solid var(--border-color);
-  color: var(--base-light);
+  color: var(--text-primary); /* Changed from --base-light */
 }
 
 .task-list {
   padding: 10px;
   flex: 1;
   overflow-y: auto;
-  min-height: 200px;
+  min-height: 150px; /* Adjusted min-height */
 }
 
 .empty-column-text {
@@ -169,6 +178,7 @@ body {
   text-align: center;
   font-style: italic;
   margin: 20px 0;
+  padding: 10px;
 }
 
 .add-task-button {
@@ -180,48 +190,55 @@ body {
   margin: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: center;
 }
 
 .add-task-button:hover {
-  color: var(--text-color);
-  border-color: var(--base-light);
-  background-color: rgba(0, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: var(--accent-color);
+  background-color: rgba(74, 144, 226, 0.1); /* Light accent background */
 }
 
 /* TaskCard Styles */
 .task-card {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--card-bg);
   border-radius: 4px;
   padding: 15px;
   margin-bottom: 10px;
   cursor: grab;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   user-select: none;
+  box-shadow: 0 1px 3px var(--card-shadow);
+  border-left-width: 4px; /* Ensure this is for the color from JS */
+  border-left-style: solid; /* Ensure this is for the color from JS */
+  /* border-left-color is set inline in TaskCard.js */
 }
 
 .task-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px var(--card-shadow);
 }
 
 .task-card.dragging {
-  opacity: 0.6;
-  transform: scale(0.98);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0.8; /* Slightly more opaque */
+  transform: scale(0.98) rotate(2deg); /* Add a slight rotation */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   cursor: grabbing;
 }
 
 .task-title {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600; /* Bolder task title */
   margin-top: 0;
   margin-bottom: 8px;
+  color: var(--text-primary);
 }
 
 .task-description {
   font-size: 0.9rem;
   color: var(--text-secondary);
   margin-bottom: 10px;
+  line-height: 1.4;
 }
 
 .task-priority {
@@ -233,68 +250,85 @@ body {
 .task-actions {
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .edit-button {
   background-color: transparent;
   color: var(--text-secondary);
-  border: none;
+  border: 1px solid transparent; /* Keep alignment, make border visible on hover */
   cursor: pointer;
   padding: 4px 8px;
   font-size: 0.8rem;
   border-radius: 3px;
+  transition: all 0.2s ease;
 }
 
 .edit-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
+  background-color: rgba(0,0,0,0.05);
+  color: var(--text-primary);
+  border-color: var(--border-color);
 }
 
 /* TaskForm Styles */
 .task-form {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--app-bg); /* Light background for form inside columns */
   border-radius: 4px;
-  padding: 12px;
+  padding: 15px; /* More padding */
   margin-bottom: 16px;
   border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
 }
 
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: 15px; /* Increased spacing */
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 4px;
-  font-size: 0.85rem;
+  margin-bottom: 6px; /* Increased spacing */
+  font-size: 0.9rem; /* Slightly larger label */
   color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .form-group input[type="text"],
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 8px;
-  background-color: rgba(0, 0, 0, 0.2);
+  padding: 10px; /* More padding */
+  background-color: #fff; /* White background for inputs */
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  color: var(--text-color);
+  color: var(--text-primary);
   font-size: 0.9rem;
+  box-sizing: border-box; /* Ensure padding doesn't break layout */
 }
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  outline: none;
+}
+
 
 .form-group input[type="color"] {
   width: 100%;
-  height: 30px;
-  background-color: rgba(0, 0, 0, 0.2);
+  height: 40px; /* Taller color picker */
+  background-color: #fff;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 2px;
+  box-sizing: border-box;
 }
 
 .form-actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px; /* More space above actions */
 }
 
 .btn-cancel {
@@ -304,6 +338,7 @@ body {
 }
 
 .btn-cancel:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
+  background-color: rgba(0,0,0,0.05);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
 }
